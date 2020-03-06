@@ -1,0 +1,7 @@
+{
+  "name": "figma-export-convention",
+  "id": "817681172286155887",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html"
+}
