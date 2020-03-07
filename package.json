@@ -22,5 +22,8 @@
   "homepage": "https://github.com/ozhsmt/figma-export-convention#readme",
   "dependencies": {
     "jszip": "^3.2.2"
+  },
+  "devDependencies": {
+    "@types/jszip": "^3.1.7"
   }
 }
