@@ -13,7 +13,6 @@
   document.getElementById('export').onclick = (_event) => {
     const selector = document.getElementById('convention');
     const convention = selector.options[selector.selectedIndex].value;
-    console.log(convention);
     parent.postMessage({ pluginMessage: { type: 'export', value: convention } }, '*');
   }
 

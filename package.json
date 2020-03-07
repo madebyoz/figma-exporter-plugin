@@ -1,0 +1,26 @@
+{
+  "name": "figma-export-convention",
+  "version": "1.0.0",
+  "description": "Export with filename conventions",
+  "main": "code.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ozhsmt/figma-export-convention.git"
+  },
+  "keywords": [
+    "figma",
+    "exporter"
+  ],
+  "author": "okazu <hello@okazu.co>, Darwin D. Wu <darwin@chaba.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ozhsmt/figma-export-convention/issues"
+  },
+  "homepage": "https://github.com/ozhsmt/figma-export-convention#readme",
+  "dependencies": {
+    "jszip": "^3.2.2"
+  }
+}
