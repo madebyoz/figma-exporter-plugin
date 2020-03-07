@@ -1,11 +1,20 @@
 <h2>Export Settings</h2>
 
 <label for="convention">File name format:</label>
-<select id=convention></select>
+<select id="convention"></select>
+
+<button id="export">Export</button>
 
 <script>
   window.onload = (event) => {
     parent.postMessage({ pluginMessage: { type: 'load' } }, '*');
+  }
+
+  document.getElementById('export').onclick = (_event) => {
+    const selector = document.getElementById('convention');
+    const convention = selector.options[selector.selectedIndex].value;
+    console.log(convention);
+    parent.postMessage({ pluginMessage: { type: 'export', value: convention } }, '*');
   }
 
   onmessage = (event) => {
