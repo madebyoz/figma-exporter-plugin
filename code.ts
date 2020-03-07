@@ -32,6 +32,11 @@ figma.ui.onmessage = msg => {
 };
 
 function exportAs(convention: string) {
+  if (!isValidSelection(figma.currentPage.selection)) {
+    figma.closePlugin("Can't export nothing");
+    return
+  }
+
   const filename = figma.root.name;
 
   switch (convention) {
@@ -62,4 +67,8 @@ function toCamelCase(value: string): string {
 
 function capitalize(value: string): string {
   return value[0].toUpperCase() + value.substr(1).toLowerCase();
+}
+
+function isValidSelection(nodes: Readonly<SceneNode[]>): boolean {
+  return !nodes && nodes.length === 0;
 }
