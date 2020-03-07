@@ -1,17 +1,26 @@
-<h2>Rectangle Creator</h2>
-<p>Count: <input id="count" value="5"></p>
-<button id="create">Create</button>
-<button id="cancel">Cancel</button>
+<h2>Export Settings</h2>
+
+<label for="convention">File name format:</label>
+<select id=convention></select>
+
 <script>
+  window.onload = (event) => {
+    parent.postMessage({ pluginMessage: { type: 'load' } }, '*');
+  }
 
-document.getElementById('create').onclick = () => {
-  const textbox = document.getElementById('count');
-  const count = parseInt(textbox.value, 10);
-  parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
-}
+  onmessage = (event) => {
+    const msg = event.data.pluginMessage;
 
-document.getElementById('cancel').onclick = () => {
-  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
-}
+    if (msg.type === 'load') {
+      let selector = document.getElementById('convention');
+      const conventions = msg.value;
 
+      conventions.forEach(convention => {
+        const option = document.createElement('option');
+        option.text = convention;
+        option.value = convention;
+        selector.appendChild(option);
+      });
+    }
+  }
 </script>
