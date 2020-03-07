@@ -5,6 +5,7 @@
 
 <button id="export">Export</button>
 
+<script type="text/javascript" src="./node_modules/jszip/dist/jszip.min.js"></script>
 <script>
   window.onload = (event) => {
     parent.postMessage({ pluginMessage: { type: 'load' } }, '*');
@@ -18,6 +19,7 @@
 
   onmessage = (event) => {
     const msg = event.data.pluginMessage;
+    if (!msg) return;
 
     if (msg.type === 'load') {
       let selector = document.getElementById('convention');
@@ -29,6 +31,41 @@
         option.value = convention;
         selector.appendChild(option);
       });
+    } else if (msg.type === 'exportResults') {
+      compressExport(msg.value, msg.filename)
+        .then(() => {
+          console.log('Done!');
+        });
     }
+  }
+
+  function toBuffer(ary) {
+    return ary.buffer.slice(ary.byteOffset, ary.byteLength + ary.byteOffset);
+  }
+
+  async function compressExport(exportableBytes, filename) {
+    return new Promise(res => {
+      let zip = new JSZip();
+
+      for (let data of exportableBytes) {
+        const { name, setting, bytes, blobType, extension } = data;
+        const buffer = toBuffer(bytes);
+
+        let blob = new Blob([buffer], { type: blobType })
+        zip.file(`${name}${setting.suffix}${extension}`, blob, { base64: true });
+      }
+
+      zip.generateAsync({ type: 'blob' })
+        .then((content) => {
+          const blobURL = window.URL.createObjectURL(content);
+          const link = document.createElement('a');
+          link.className = 'button button-primary';
+          link.href = blobURL;
+          link.download = `${filename}.zip`
+          link.click()
+          link.setAttribute('download', `${name}.zip`);
+          resolve();
+        })
+    })
   }
 </script>

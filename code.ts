@@ -1,3 +1,5 @@
+// import JSZip from "jszip";
+
 const SNAKE_CASE = 'snake_case';
 const CAMEL_CASE = 'camelCase';
 
@@ -6,6 +8,14 @@ const CONVENTIONS = [
   SNAKE_CASE,
   CAMEL_CASE
 ];
+
+interface ExportableBytes {
+  name: string;
+  setting: ExportSettingsImage | ExportSettingsPDF | ExportSettingsSVG;
+  bytes: Uint8Array;
+  blobType: string;
+  extension: string;
+}
 
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__);
@@ -23,7 +33,8 @@ figma.ui.onmessage = msg => {
 
   case 'export':
     const convention: string = msg.value;
-    exportAs(convention);
+    exportAs(convention)
+      .then(res => figma.closePlugin(res));
     break;
 
   default:
@@ -31,26 +42,58 @@ figma.ui.onmessage = msg => {
   }
 };
 
-function exportAs(convention: string) {
-  if (!isValidSelection(figma.currentPage.selection)) {
-    figma.closePlugin("Can't export nothing");
-    return
+async function exportAs(convention: string): Promise<string> {
+  const nodes = figma.currentPage.selection;
+  if (!isValidSelection(nodes)) {
+    return new Promise(res => res("Can't export nothing"));
   }
 
-  const filename = figma.root.name;
+  let exportableBytes: ExportableBytes[] = [];
+  for (let node of nodes) {
+    let settings: ExportSettings[];
+    const { name, exportSettings } = node;
+
+    if (exportSettings.length === 0) {
+      settings = [{ format: "PNG", suffix: '', constraint: { type: "SCALE", value: 1 }, contentsOnly: true }];
+    }
+
+    for (let setting of settings) {
+      const bytes = await node.exportAsync(setting);
+      exportableBytes.push({
+        name: name,
+        setting: setting,
+        bytes: bytes,
+        blobType: formatToBlobType(setting.format),
+        extension: formatToExtension(setting.format)
+      });
+    };
+  };
+
+  figma.showUI(__html__, { visible: false });
+  figma.ui.postMessage({
+    type: 'exportResults',
+    value: exportableBytes,
+    filename: toExportFilename(convention)
+  });
+
+  return new Promise(res => {
+    figma.ui.onmessage = () => res();
+  });
+}
+
+function toExportFilename(convention: string): string {
+  const projectName = figma.root.name;
 
   switch (convention) {
   case SNAKE_CASE:
-    console.log(toSnakeCase(filename));
-    break;
-  case CAMEL_CASE:
-    console.log(toCamelCase(filename));
-    break;
-  default:
-    console.log(filename);
-  }
+    return toSnakeCase(projectName);
 
-  figma.closePlugin();
+  case CAMEL_CASE:
+    return toCamelCase(projectName);
+
+  default:
+    return projectName;
+  }
 }
 
 function toSnakeCase(value: string): string {
@@ -70,5 +113,25 @@ function capitalize(value: string): string {
 }
 
 function isValidSelection(nodes: Readonly<SceneNode[]>): boolean {
-  return !nodes && nodes.length === 0;
+  return !(!nodes || nodes.length === 0);
+}
+
+function formatToBlobType(format: string): string {
+  switch(format) {
+    case "PDF": return 'application/pdf'
+    case "SVG": return 'image/svg+xml'
+    case "PNG": return 'image/png'
+    case "JPG": return 'image/jpeg'
+    default: return 'image/png'
+  }
+}
+
+function formatToExtension(format: string): string {
+  switch(format) {
+    case "PDF": return '.pdf'
+    case "SVG": return '.svg'
+    case "PNG": return '.png'
+    case "JPG": return '.jpg'
+    default: return '.png'
+  }
 }
