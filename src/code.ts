@@ -23,9 +23,7 @@ figma.showUI(__html__);
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
-figma.ui.onmessage = msg => {
-  console.log(msg)
-
+figma.ui.onmessage = async (msg) => {
   switch (msg.type) {
   case 'load':
     figma.ui.postMessage({ type: 'load', value: CONVENTIONS });
@@ -37,11 +35,8 @@ figma.ui.onmessage = msg => {
       .then(res => console.log(res));
     break;
 
-  case 'close':
-    figma.closePlugin();
-    break;
-
   default:
+    console.log('Done!');
     figma.closePlugin();
   }
 };
@@ -54,12 +49,16 @@ async function exportAs(convention: string): Promise<string> {
 
   let exportableBytes: ExportableBytes[] = [];
   for (let node of nodes) {
-    let settings: ExportSettings[];
+    let settings: readonly ExportSettings[];
     const { name, exportSettings } = node;
 
     if (exportSettings.length === 0) {
       settings = [{ format: "PNG", suffix: '', constraint: { type: "SCALE", value: 1 }, contentsOnly: true }];
+    } else {
+      settings = exportSettings;
     }
+
+    console.log(`Exporting ${name}`);
 
     for (let setting of settings) {
       const bytes = await node.exportAsync(setting);
@@ -80,9 +79,7 @@ async function exportAs(convention: string): Promise<string> {
     filename: toExportFilename(convention)
   });
 
-  return new Promise(res => {
-    figma.ui.onmessage = () => res();
-  });
+  return new Promise(res => res('Complete export.'));
 }
 
 function toExportFilename(convention: string): string {

@@ -27,8 +27,7 @@ onmessage = (event) => {
   } else if (msg.type === 'exportResults') {
     compressExport(msg.value, msg.filename)
       .then(() => {
-        console.log('Done!');
-        parent.postMessage({ pluginMessage: { type: 'close' } }, '*')
+        parent.postMessage({ pluginMessage: { type: 'close' } }, '*');
       });
   }
 }
@@ -37,7 +36,7 @@ function toBuffer(ary) {
   return ary.buffer.slice(ary.byteOffset, ary.byteLength + ary.byteOffset);
 }
 
-async function compressExport(exportableBytes, filename) {
+async function compressExport(exportableBytes, filename): Promise<any> {
   return new Promise(res => {
     let zip = new JSZip();
 
