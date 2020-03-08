@@ -4,7 +4,10 @@ import { ExportableBytes } from "../interfaces";
 export async function exportAs(convention: string): Promise<string> {
   const nodes = figma.currentPage.selection;
   if (!isValidSelection(nodes)) {
-    return new Promise(res => res("Can't export nothing"));
+    return new Promise(res => {
+      res("Can't export nothing");
+      figma.closePlugin();
+    });
   }
 
   let exportableBytes: ExportableBytes[] = [];

@@ -8,13 +8,19 @@ figma.showUI(__html__, { visible: true, width: 240, height: 100 });
 figma.ui.onmessage = async (msg) => {
   switch (msg.type) {
   case 'export':
+    figma.notify('Exporing files...');
     const convention: string = msg.value;
-    exportAs(convention)
+
+    // Resume after 1 second to allow UI to re-render.
+    setTimeout(() => {
+      exportAs(convention)
       .then(res => console.log(res));
+    }, 1);
     break;
 
   default:
-    console.log('Done!');
+    console.log('Closing Plugin!');
+    figma.notify('Done!');
     figma.closePlugin();
   }
 };

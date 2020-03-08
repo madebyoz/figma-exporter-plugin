@@ -27,6 +27,7 @@ class App extends React.Component<{}, State> {
     super(props);
 
     this.state = {
+      loading: false,
       convention: ORIGINAL
     }
 
@@ -39,7 +40,8 @@ class App extends React.Component<{}, State> {
   }
 
   onExport() {
-    const pluginMessage = { type: 'export', value: this.state.convention }
+    this.setState({ loading: true });
+    const pluginMessage = { type: 'export', value: this.state.convention };
     parent.postMessage({ pluginMessage: pluginMessage }, '*');
   }
 
@@ -50,11 +52,17 @@ class App extends React.Component<{}, State> {
     });
 
     return (
-      <div>
-        <Select id="convention" options={options} defaultValue={defaultOption} onChange={this.onSelect} />
-        <Button id="export" variant="secondary" fullWidth onClick={this.onExport}>Export</Button>
-      </div>
-    )
+      <>
+        <div id="loader" hidden={!this.state.loading}>
+          <div className="loader"></div>
+        </div>
+
+        <div hidden={this.state.loading}>
+          <Select id="convention" options={options} defaultValue={defaultOption} onChange={this.onSelect} />
+          <Button id="export" variant="secondary" fullWidth onClick={this.onExport}>Export</Button>
+        </div>
+      </>
+    );
   }
 }
 
