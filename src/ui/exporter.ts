@@ -1,11 +1,11 @@
 import JSZip from 'jszip';
 import { ExportableBytes } from "../interfaces";
 
-function toBuffer(ary: Uint8Array): ArrayBuffer {
+const toBuffer = (ary: Uint8Array): ArrayBuffer => {
   return ary.buffer.slice(ary.byteOffset, ary.byteLength + ary.byteOffset);
 }
 
-export async function compressExport(exportableBytes: ExportableBytes[], filename: string): Promise<any> {
+export const compressExport = async (exportableBytes: ExportableBytes[], filename: string): Promise<any> => {
   return new Promise(res => {
     let zip = new JSZip();
 
