@@ -1,5 +1,3 @@
-// import JSZip from "jszip";
-
 const KEBAB_CASE = 'kebab-case';
 const SNAKE_CASE = 'snake_case';
 const CAMEL_CASE = 'camelCase';
