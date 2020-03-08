@@ -58,12 +58,13 @@ async function exportAs(convention: string): Promise<string> {
       settings = exportSettings;
     }
 
-    console.log(`Exporting ${name}`);
+    const exportName = inConvention(convention, name);
+    console.log(`Exporting "${name}" as "${exportName}"`);
 
     for (let setting of settings) {
       const bytes = await node.exportAsync(setting);
       exportableBytes.push({
-        name: name,
+        name: exportName,
         setting: setting,
         bytes: bytes,
         blobType: formatToBlobType(setting.format),
@@ -82,19 +83,22 @@ async function exportAs(convention: string): Promise<string> {
   return new Promise(res => res('Complete export.'));
 }
 
+function inConvention(convention: string, value: string): string {
+  switch (convention) {
+    case SNAKE_CASE:
+      return toSnakeCase(value);
+
+    case CAMEL_CASE:
+      return toCamelCase(value);
+
+    default:
+      return value;
+    }
+}
+
 function toExportFilename(convention: string): string {
   const projectName = figma.root.name;
-
-  switch (convention) {
-  case SNAKE_CASE:
-    return toSnakeCase(projectName);
-
-  case CAMEL_CASE:
-    return toCamelCase(projectName);
-
-  default:
-    return projectName;
-  }
+  return inConvention(convention, projectName);
 }
 
 function toSnakeCase(value: string): string {
@@ -110,6 +114,8 @@ function toCamelCase(value: string): string {
 }
 
 function capitalize(value: string): string {
+  if (value.length < 2)
+    return value.toUpperCase();
   return value[0].toUpperCase() + value.substr(1).toLowerCase();
 }
 
