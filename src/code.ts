@@ -1,10 +1,12 @@
 // import JSZip from "jszip";
 
+const KEBAB_CASE = 'kebab-case';
 const SNAKE_CASE = 'snake_case';
 const CAMEL_CASE = 'camelCase';
 
 const CONVENTIONS = [
   'original',
+  KEBAB_CASE,
   SNAKE_CASE,
   CAMEL_CASE
 ];
@@ -58,12 +60,13 @@ async function exportAs(convention: string): Promise<string> {
       settings = exportSettings;
     }
 
-    console.log(`Exporting ${name}`);
+    const exportName = inConvention(convention, name);
+    console.log(`Exporting "${name}" as "${exportName}"`);
 
     for (let setting of settings) {
       const bytes = await node.exportAsync(setting);
       exportableBytes.push({
-        name: name,
+        name: exportName,
         setting: setting,
         bytes: bytes,
         blobType: formatToBlobType(setting.format),
@@ -76,25 +79,36 @@ async function exportAs(convention: string): Promise<string> {
   figma.ui.postMessage({
     type: 'exportResults',
     value: exportableBytes,
-    filename: toExportFilename(convention)
+    filename: exportFilename(convention)
   });
 
   return new Promise(res => res('Complete export.'));
 }
 
-function toExportFilename(convention: string): string {
-  const projectName = figma.root.name;
-
+function inConvention(convention: string, value: string): string {
   switch (convention) {
-  case SNAKE_CASE:
-    return toSnakeCase(projectName);
+    case KEBAB_CASE:
+      return toKebabCase(value);
 
-  case CAMEL_CASE:
-    return toCamelCase(projectName);
+    case SNAKE_CASE:
+      return toSnakeCase(value);
 
-  default:
-    return projectName;
-  }
+    case CAMEL_CASE:
+      return toCamelCase(value);
+
+    default:
+      return value;
+    }
+}
+
+function exportFilename(convention: string): string {
+  const projectName = figma.root.name;
+  return inConvention(convention, projectName);
+}
+
+function toKebabCase(value: string): string {
+  const regex = /[\s\W]+/g
+  return value.replace(regex, '-').toLowerCase();
 }
 
 function toSnakeCase(value: string): string {
@@ -110,6 +124,8 @@ function toCamelCase(value: string): string {
 }
 
 function capitalize(value: string): string {
+  if (value.length < 2)
+    return value.toUpperCase();
   return value[0].toUpperCase() + value.substr(1).toLowerCase();
 }
 
