@@ -1,7 +1,7 @@
 import { exportAs } from './code/exporter';
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { visible: true, width: 240, height: 100 });
+figma.showUI(__html__, { visible: true, width: 240, height: 160 });
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the posted message.
