@@ -22,7 +22,8 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run: |
+      - name: Run build
+        run: |
           npm i
           npm run build
 
@@ -41,6 +42,7 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run: |
+      - name: Run tests
+        run: |
           npm i
           npm run test
