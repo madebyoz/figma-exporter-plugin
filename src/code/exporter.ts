@@ -1,5 +1,5 @@
-import { KEBAB_CASE, SNAKE_CASE, CAMEL_CASE } from "../constants";
 import { ExportableBytes } from "../interfaces";
+import { inConvention } from "./convert";
 
 export async function exportAs(convention: string): Promise<string> {
   const nodes = figma.currentPage.selection;
@@ -46,48 +46,9 @@ export async function exportAs(convention: string): Promise<string> {
   return new Promise(res => res('Complete export.'));
 }
 
-function inConvention(convention: string, value: string): string {
-  switch (convention) {
-    case KEBAB_CASE:
-      return toKebabCase(value);
-
-    case SNAKE_CASE:
-      return toSnakeCase(value);
-
-    case CAMEL_CASE:
-      return toCamelCase(value);
-
-    default:
-      return value;
-    }
-}
-
 function exportFilename(convention: string): string {
   const projectName = figma.root.name;
   return inConvention(convention, projectName);
-}
-
-function toKebabCase(value: string): string {
-  const regex = /[\s\W]+/g
-  return value.replace(regex, '-').toLowerCase();
-}
-
-function toSnakeCase(value: string): string {
-  const regex = /[\s\W]+/g
-  return value.replace(regex, '_').toLowerCase();
-}
-
-function toCamelCase(value: string): string {
-  const result = value.split(/[\s\W]/g).map((str, idx) => {
-    return idx == 0 ? str.toLowerCase() : capitalize(str);
-  });
-  return result.join('');
-}
-
-function capitalize(value: string): string {
-  if (value.length < 2)
-    return value.toUpperCase();
-  return value[0].toUpperCase() + value.substr(1).toLowerCase();
 }
 
 function isValidSelection(nodes: Readonly<SceneNode[]>): boolean {
