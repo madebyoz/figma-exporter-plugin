@@ -25,7 +25,6 @@ figma.showUI(__html__, { visible: true, width: 240, height: 100 });
 // posted message.
 figma.ui.onmessage = async (msg) => {
   switch (msg.type) {
-
   case 'export':
     const convention: string = msg.value;
     exportAs(convention)
