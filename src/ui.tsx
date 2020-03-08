@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import { Select, Button } from 'figma-styled-components';
 import { CONVENTIONS } from './constants';
 
+import './style.css';
+
 declare function require(path: string): any
 
 interface SelectOption {
