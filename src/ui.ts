@@ -25,10 +25,10 @@ onmessage = (event) => {
       selector.appendChild(option);
     });
   } else if (msg.type === 'exportResults') {
-    console.log('export!!!')
     compressExport(msg.value, msg.filename)
       .then(() => {
         console.log('Done!');
+        parent.postMessage({ pluginMessage: { type: 'close' } }, '*')
       });
   }
 }

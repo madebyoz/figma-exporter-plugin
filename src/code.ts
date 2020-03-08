@@ -34,11 +34,15 @@ figma.ui.onmessage = msg => {
   case 'export':
     const convention: string = msg.value;
     exportAs(convention)
-      .then(res => figma.closePlugin(res));
+      .then(res => console.log(res));
+    break;
+
+  case 'close':
+    figma.closePlugin();
     break;
 
   default:
-    console.log('hello world');
+    figma.closePlugin();
   }
 };
 
