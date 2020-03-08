@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-declare function require(path: string): any
+import { Select, Button } from 'figma-styled-components';
+import { CONVENTIONS } from './constants';
 
-import Selector from './Selector';
-import Exporter from "./Exporter";
+declare function require(path: string): any
 
 class App extends React.Component<{}, {}> {
   render() {
     return (
       <div>
-        <Selector />
-        <Exporter />
+        <Select id="convention" options={options} />
+        <Button id="export" variant="secondary" fullWidth>Export</Button>
       </div>
     )
   }
