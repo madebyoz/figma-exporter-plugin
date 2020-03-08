@@ -1,10 +1,12 @@
 // import JSZip from "jszip";
 
+const KEBAB_CASE = 'kebab-case';
 const SNAKE_CASE = 'snake_case';
 const CAMEL_CASE = 'camelCase';
 
 const CONVENTIONS = [
   'original',
+  KEBAB_CASE,
   SNAKE_CASE,
   CAMEL_CASE
 ];
@@ -77,7 +79,7 @@ async function exportAs(convention: string): Promise<string> {
   figma.ui.postMessage({
     type: 'exportResults',
     value: exportableBytes,
-    filename: toExportFilename(convention)
+    filename: exportFilename(convention)
   });
 
   return new Promise(res => res('Complete export.'));
@@ -85,6 +87,9 @@ async function exportAs(convention: string): Promise<string> {
 
 function inConvention(convention: string, value: string): string {
   switch (convention) {
+    case KEBAB_CASE:
+      return toKebabCase(value);
+
     case SNAKE_CASE:
       return toSnakeCase(value);
 
@@ -96,9 +101,14 @@ function inConvention(convention: string, value: string): string {
     }
 }
 
-function toExportFilename(convention: string): string {
+function exportFilename(convention: string): string {
   const projectName = figma.root.name;
   return inConvention(convention, projectName);
+}
+
+function toKebabCase(value: string): string {
+  const regex = /[\s\W]+/g
+  return value.replace(regex, '-').toLowerCase();
 }
 
 function toSnakeCase(value: string): string {
