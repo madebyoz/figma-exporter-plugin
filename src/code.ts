@@ -1,28 +1,11 @@
-const KEBAB_CASE = 'kebab-case';
-const SNAKE_CASE = 'snake_case';
-const CAMEL_CASE = 'camelCase';
-
-const CONVENTIONS = [
-  'original',
-  KEBAB_CASE,
-  SNAKE_CASE,
-  CAMEL_CASE
-];
-
-interface ExportableBytes {
-  name: string;
-  setting: ExportSettingsImage | ExportSettingsPDF | ExportSettingsSVG;
-  bytes: Uint8Array;
-  blobType: string;
-  extension: string;
-}
+import { KEBAB_CASE, SNAKE_CASE, CAMEL_CASE } from "./constants";
+import { ExportableBytes } from "./interfaces";
 
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__, { visible: true, width: 240, height: 100 });
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
-// callback. The callback will be passed the "pluginMessage" property of the
-// posted message.
+// callback. The callback will be passed the "pluginMessage" property of the posted message.
 figma.ui.onmessage = async (msg) => {
   switch (msg.type) {
   case 'export':

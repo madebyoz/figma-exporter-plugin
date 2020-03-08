@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSZip from 'jszip';
 
 import { Select, Button } from 'figma-styled-components';
+import { UISelectOption as Option, UIState as State } from "./interfaces";
 import { CONVENTIONS, ORIGINAL } from './constants';
+import { compressExport } from "./ui/exporter";
 
 import './style.css';
 
@@ -19,15 +20,6 @@ window.onmessage = (event) => {
         parent.postMessage({ pluginMessage: { type: 'close' } }, '*');
       });
   }
-}
-
-interface SelectOption {
-  label: string;
-  value: string;
-}
-
-interface State {
-  convention: string;
 }
 
 class App extends React.Component<{}, State> {
@@ -52,8 +44,8 @@ class App extends React.Component<{}, State> {
   }
 
   render() {
-    const defaultOption: SelectOption = { label: ORIGINAL, value: ORIGINAL };
-    const options: SelectOption[] = CONVENTIONS.map(conv => {
+    const defaultOption: Option = { label: ORIGINAL, value: ORIGINAL };
+    const options: Option[] = CONVENTIONS.map(conv => {
       return { label: conv, value: conv };
     });
 
@@ -64,36 +56,6 @@ class App extends React.Component<{}, State> {
       </div>
     )
   }
-}
-
-function toBuffer(ary) {
-  return ary.buffer.slice(ary.byteOffset, ary.byteLength + ary.byteOffset);
-}
-
-async function compressExport(exportableBytes, filename): Promise<any> {
-  return new Promise(res => {
-    let zip = new JSZip();
-
-    for (let data of exportableBytes) {
-      const { name, setting, bytes, blobType, extension } = data;
-      const buffer = toBuffer(bytes);
-
-      let blob = new Blob([buffer], { type: blobType })
-      zip.file(`${name}${setting.suffix}${extension}`, blob, { base64: true });
-    }
-
-    zip.generateAsync({ type: 'blob' })
-      .then((content) => {
-        const blobURL = window.URL.createObjectURL(content);
-        const link = document.createElement('a');
-        link.className = 'button button-primary';
-        link.href = blobURL;
-        link.download = `${filename}.zip`
-        link.click()
-        link.setAttribute('download', `${name}.zip`);
-        res();
-      })
-  })
 }
 
 ReactDOM.render(<App />, document.getElementById('plugin'));
