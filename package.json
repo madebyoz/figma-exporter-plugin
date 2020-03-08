@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/ozhsmt/figma-export-convention#readme",
   "dependencies": {
+    "figma-styled-components": "^1.2.6",
     "jszip": "^3.2.2"
   },
   "devDependencies": {
