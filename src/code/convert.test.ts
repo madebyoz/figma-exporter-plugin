@@ -1,7 +1,9 @@
 import {
   toSnakeCase,
   toKebabCase,
-  toCamelCase
+  toCamelCase,
+  capitalize,
+  inConvention
 } from "./convert";
 
 describe('toKebabCase', () => {
@@ -62,5 +64,17 @@ describe('toCamelCase', () => {
     const input = "FoO+/=~BAr";
     const output = "fooBar";
     expect(toCamelCase(input)).toEqual(output);
+  });
+});
+
+describe('capitalize', () => {
+  it("upcase the whole string if it's too short", () => {
+    expect(capitalize("n")).toEqual("N");
+    expect(capitalize("")).toEqual("");
+  });
+
+  it("converts the first letter to uppercase and the rest to lowercase", () => {
+    expect(capitalize("heLLoWoRld")).toEqual("Helloworld");
+    expect(capitalize("conVenTIOn")).toEqual("Convention");
   });
 });
