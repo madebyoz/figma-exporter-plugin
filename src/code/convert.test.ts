@@ -1,3 +1,4 @@
+import { ORIGINAL, KEBAB_CASE, SNAKE_CASE, CAMEL_CASE } from "../constants";
 import {
   toSnakeCase,
   toKebabCase,
@@ -76,5 +77,16 @@ describe('capitalize', () => {
   it("converts the first letter to uppercase and the rest to lowercase", () => {
     expect(capitalize("heLLoWoRld")).toEqual("Helloworld");
     expect(capitalize("conVenTIOn")).toEqual("Convention");
+  });
+});
+
+describe('inConvention', () => {
+  const value = "FoO+/=~BAr";
+
+  it("converts the input to the expected format", () => {
+    expect(inConvention(ORIGINAL, value)).toEqual(value);
+    expect(inConvention(KEBAB_CASE, value)).toEqual("foo-bar");
+    expect(inConvention(SNAKE_CASE, value)).toEqual("foo_bar");
+    expect(inConvention(CAMEL_CASE, value)).toEqual("fooBar");
   });
 });
