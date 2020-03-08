@@ -1,8 +1,5 @@
 import JSZip from 'jszip';
 
-window.onload = (event) => {
-  parent.postMessage({ pluginMessage: { type: 'load' } }, '*');
-}
 
 document.getElementById('export').onclick = (_event) => {
   const selector = document.getElementById('convention') as HTMLSelectElement;
@@ -14,17 +11,7 @@ onmessage = (event) => {
   const msg = event.data.pluginMessage;
   if (!msg) return;
 
-  if (msg.type === 'load') {
-    let selector = document.getElementById('convention');
-    const conventions = msg.value;
-
-    conventions.forEach(convention => {
-      const option = document.createElement('option');
-      option.text = convention;
-      option.value = convention;
-      selector.appendChild(option);
-    });
-  } else if (msg.type === 'exportResults') {
+  if (msg.type === 'exportResults') {
     compressExport(msg.value, msg.filename)
       .then(() => {
         parent.postMessage({ pluginMessage: { type: 'close' } }, '*');
