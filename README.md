@@ -1,22 +1,23 @@
-This plugin template uses Typescript. If you are familiar with Javascript, Typescript will
-look very familiar. In fact, valid Javascript code is already valid Typescript code.
+![GitHub](https://img.shields.io/github/license/ozhsmt/figma-export-convention)
 
-Typescript adds type annotations to variables. This allows code editors such as Visual Studio Code
-to provide information about the Figma API while you are writing code, as well as help catch bugs
-you previously didn't notice.
+# Figma exporter plugin
 
-For more information, visit https://www.typescriptlang.org/
+This exporter plugin let's you select the convention you want your exported files to be named as.
 
-Using Typescript requires a compiler to convert Typescript (code.ts) into Javascript (code.js)
-for the browser to run.
+The available conventions are,
 
-To get the TypeScript compiler working:
+* kebab-case
+* snake_case
+* camelCase
 
-1. Download Visual Studio Code if you haven't already: https://code.visualstudio.com/.
-2. Install the TypeScript compiler globally: `sudo npm install -g typescript`.
-3. Open this directory in Visual Studio Code.
-4. Compile TypeScript to JavaScript: Run the "Terminal > Run Build Task..." menu item,
-    then select "tsc: watch - tsconfig.json". You will have to do this again every time
-    you reopen Visual Studio Code.
+Or you can just export them as is if you prefer to keep you current filename structure.
 
-That's it! Visual Studio Code will regenerate the JavaScript file every time you save.
+## Usage
+
+#### Choose a filename convention and hit the `Export` button.
+
+![UI](./images/plugin.png)
+
+#### Unzip the the downloaded zip and you should see the filenames are named with the chosen convention.
+
+![Exported Files](./images/exported-files.png)
