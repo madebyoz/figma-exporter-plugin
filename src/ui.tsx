@@ -6,8 +6,17 @@ import { CONVENTIONS } from './constants';
 
 declare function require(path: string): any
 
+interface SelectOption {
+  label: string;
+  value: string;
+}
+
 class App extends React.Component<{}, {}> {
   render() {
+    const options: SelectOption[] = CONVENTIONS.map(conv => {
+      return { label: conv, value: conv };
+    });
+
     return (
       <div>
         <Select id="convention" options={options} />
