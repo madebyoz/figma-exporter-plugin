@@ -1,4 +1,4 @@
-![CI](https://github.com/ozhsmt/figma-export-convention/workflows/build-test/badge.svg)
+![CI](https://github.com/ozhsmt/figma-export-convention/workflows/build-test/badge.svg?branch=master)
 ![GitHub](https://img.shields.io/github/license/ozhsmt/figma-export-convention)
 
 # Figma exporter plugin
