@@ -13,6 +13,9 @@ The available conventions are,
 
 Or you can just export them as is if you prefer to keep you current filename structure.
 
+![Cover](./images/cover.png)
+
+
 ## Usage
 
 #### Choose a filename convention and hit the `Export` button.
