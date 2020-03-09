@@ -1,8 +1,18 @@
+#plugin {
+  padding: 0 8px;
+}
+
 #convention {
   margin-bottom: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   border-radius: 2px;
+}
+#convention button {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  height: 40px;
+}
+#export {
+  height: 40px;
 }
 
 /* CSS Export Loading Animation */
@@ -15,18 +25,24 @@
 
 .loader {
   display: inline-block;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   width: 80px;
   height: 80px;
 }
 .loader:after {
   content: " ";
   display: block;
-  width: 51px;
-  height: 51px;
+  width: 48px;
+  height: 48px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid #C4C4C4;
-  border-color: #C4C4C4 transparent #C4C4C4 transparent;
+  border: 3px solid #FF68E7;
+  border-color: #C4C4C4 transparent #FF68E7 transparent;
   animation: loader 1.2s linear infinite;
 }
 @keyframes loader {

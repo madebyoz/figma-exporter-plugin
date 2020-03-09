@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Select, Button } from 'figma-styled-components';
+import { Select, Button, SectionTitle } from 'figma-styled-components';
 import { UISelectOption as Option, UIState as State } from "./interfaces";
 import { CONVENTIONS, ORIGINAL } from './constants';
 import { compressExport } from "./ui/exporter";
@@ -58,6 +58,7 @@ class App extends React.Component<{}, State> {
         </div>
 
         <div hidden={this.state.loading}>
+          <SectionTitle>Naming Convention</SectionTitle>
           <Select id="convention" options={options} defaultValue={defaultOption} onChange={this.onSelect} />
           <Button id="export" variant="secondary" fullWidth onClick={this.onExport}>Export</Button>
         </div>
