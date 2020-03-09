@@ -1,6 +1,6 @@
 {
   "name": "Figma Exporter",
-  "id": "817681172286155887",
+  "id": "818724242728722680",
   "api": "1.0.0",
   "main": "dist/code.js",
   "ui": "dist/ui.html"
