@@ -81,12 +81,23 @@ describe('capitalize', () => {
 });
 
 describe('inConvention', () => {
-  const value = "FoO+/=~BAr";
+  let value: string;
 
   it("converts the input to the expected format", () => {
+    value = "FoO+=~BAr";
+
     expect(inConvention(ORIGINAL, value)).toEqual(value);
     expect(inConvention(KEBAB_CASE, value)).toEqual("foo-bar");
     expect(inConvention(SNAKE_CASE, value)).toEqual("foo_bar");
     expect(inConvention(CAMEL_CASE, value)).toEqual("fooBar");
+  });
+
+  it('keeps the / as directory separator', () => {
+    value = "Dir / Hello World / Image Test";
+
+    expect(inConvention(ORIGINAL, value)).toEqual("Dir/Hello World/Image Test");
+    expect(inConvention(KEBAB_CASE, value)).toEqual("dir/hello-world/image-test");
+    expect(inConvention(SNAKE_CASE, value)).toEqual("dir/hello_world/image_test");
+    expect(inConvention(CAMEL_CASE, value)).toEqual("dir/helloWorld/imageTest");
   });
 });
