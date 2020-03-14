@@ -24,17 +24,23 @@ export const toCamelCase = (value: string): string => {
 }
 
 export const inConvention = (convention: string, value: string): string => {
-  switch (convention) {
-    case KEBAB_CASE:
-      return toKebabCase(value);
+  const path = value.split('/').map((p) => {
+    const elem = p.trim();
 
-    case SNAKE_CASE:
-      return toSnakeCase(value);
+    switch (convention) {
+      case KEBAB_CASE:
+        return toKebabCase(elem);
 
-    case CAMEL_CASE:
-      return toCamelCase(value);
+      case SNAKE_CASE:
+        return toSnakeCase(elem);
 
-    default:
-      return value;
-    }
+      case CAMEL_CASE:
+        return toCamelCase(elem);
+
+      default:
+        return elem;
+      }
+  });
+
+  return path.join('/');
 }
