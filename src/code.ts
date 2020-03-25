@@ -8,7 +8,7 @@ figma.showUI(__html__, { visible: true, width: 240, height: 160 });
 figma.ui.onmessage = async (msg) => {
   switch (msg.type) {
   case 'export':
-    figma.notify('Exporing files...');
+    figma.notify('Exporting files...');
     const convention: string = msg.value;
 
     // Resume after 1 second to allow UI to re-render.
